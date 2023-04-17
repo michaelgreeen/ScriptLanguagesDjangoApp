@@ -1,32 +1,22 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.db import models
 from django.contrib.auth.models import User
+class PC(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Nazwa zestawu")
+    cpu = models.CharField(max_length=100,verbose_name="Procesor")
+    gpu = models.CharField(max_length=100,verbose_name="Karta graficzna")
+    ram = models.CharField(max_length=100,verbose_name="Pamięć RAM")
+    psu = models.CharField(max_length=100,verbose_name="Zasilacz")
+    cpu_price = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Cena procesora")
+    gpu_price = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Cena karty graficznej")
+    ram_price = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Cena pamięci RAM")
+    psu_price = models.DecimalField(max_digits=8, decimal_places=2,verbose_name="Cena zasilacza")
 
 
-class NewUserForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ("username", "password1", "password2")
-    
-    def save(self, commit=True):
-        user = super(NewUserForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-        return user
+class Comment(models.Model):
+    pc = models.ForeignKey(PC, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-
-class UserLoginForm(AuthenticationForm):
-    username = UsernameField(widget=forms.TextInput(
-        attrs={'class': 'form-control', 'placeholder': '', 'id': 'hello'}))
-    password = forms.CharField(widget=forms.PasswordInput(
-        attrs={
-            'class': 'form-control',
-            'placeholder': '',
-            'id': 'hi',
-        }
-    ))
-    
-    def __init__(self, *args, **kwargs):
-        super(UserLoginForm, self).__init__(*args, **kwargs)
-        self.error_messages['invalid_login'] = 'Niepoprawne dane logowania'
+    def __str__(self):
+        return f'{self.user.username} - {self.pc.name} - {self.created_at}'

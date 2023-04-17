@@ -1,22 +1,23 @@
-{% extends 'base.html' %} {% block content %}
-<head>
-  <title>My Django App</title>
-</head>
-<body>
-  <h1></h1>
-  {% if user.is_authenticated %} 
-  Witaj {{ user.username }}! 
-  {% else %}
-  <p>Zaloguj się lub utwórz konto</p>
-  <button class="btn btn-primary" onclick="location.href='{% url 'login' %}'">
-    Zaloguj
-  </button>
-  <button
-    class="btn btn-primary"
-    onclick="location.href='{% url 'register' %}'"
-  >
-    Zarejestruj się
-  </button>
-  {% endif %}
-</body>
+{% extends 'base.html' %} 
+{% block content %}
+<div class="text-center">
+  <head>
+    <title>PC CREATOR</title>
+  </head>
+  <body>
+    <h1></h1>
+    {% if user.is_authenticated %} Witaj {{ user.username }}! {% else %}
+    <p>Zaloguj się lub utwórz konto</p>
+    <button class="btn btn-primary" onclick="location.href='{% url 'login' %}'">
+      Zaloguj
+    </button>
+    <button
+      class="btn btn-primary"
+      onclick="location.href='{% url 'register' %}'"
+    >
+      Zarejestruj się
+    </button>
+    {% endif %}
+  </body>
+</div>
 {% endblock %}
