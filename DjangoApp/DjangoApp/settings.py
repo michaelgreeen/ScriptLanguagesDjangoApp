@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-*x09!7%eau$mlrn7n)zk11r4_gc4ee+em6!j#l=!45aer44t6*
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "index"
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ScriptLanguagesApp'
+    'ScriptLanguagesApp',
+    'crispy_forms',
+    'crispy_bootstrap4'
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,11 +57,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'DjangoApp.urls'
 
+LANGUAGE_CODE = 'pl'
+TIME_ZONE = 'Europe/Warsaw'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'authentication/templates'),
-                 os.path.join(BASE_DIR, 'ScriptLanguagesApp/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'ScriptLanguagesApp/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
