@@ -8,8 +8,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 def index_(request):
     return render(request, 'index.html')
-#JanekSiema1
-#siemaszko12312
+
 def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
