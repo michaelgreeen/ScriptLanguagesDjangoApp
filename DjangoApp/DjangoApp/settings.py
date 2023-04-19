@@ -25,7 +25,7 @@ SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-CSRF_TRUSTED_ORIGINS = ['http://153.19.213.204:9999']
+CSRF_TRUSTED_ORIGINS = ['']
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
