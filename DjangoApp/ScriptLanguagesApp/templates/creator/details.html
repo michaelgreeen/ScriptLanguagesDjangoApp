@@ -13,6 +13,7 @@
         <li class="list-group-item">GPU: {{pc.gpu}}, Cena: {{pc.gpu_price}}</li>
         <li class="list-group-item">PSU: {{pc.psu}}, Cena: {{pc.psu_price}}</li>
         <li class="list-group-item">PSU: {{pc.ram}}, Cena: {{pc.ram_price}}</li>
+        <li class="list-group-item">Średnia ocena: {{pc.average_rating}}</li>
       </ul>
       <div class="text-center">
         <form method="POST" action="{% url 'add-comment' pc.id %}">
