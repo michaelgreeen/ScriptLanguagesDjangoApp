@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*x09!7%eau$mlrn7n)zk11r4_gc4ee+em6!j#l=!45aer44t6*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS=["*"]
 CSRF_TRUSTED_ORIGINS=['https://pc-creator.herokuapp.com/','http://127.0.0.1/']
 CORS_ALLOW_CREDENTIALS = True
