@@ -1,4 +1,12 @@
 {% extends "base.html" %} {% block content %}
+<style>
+  tr:nth-child(odd) {
+      background-color: rgb(204, 243, 255);
+  }
+  tr:nth-child(even) {
+    background-color: rgb(230, 249, 255);
+}
+</style>
 <div class="row">
   <div class="col-12">
     <table class="table table-sm">
@@ -9,13 +17,7 @@
           <th scope="col">GPU</th>
           <th scope="col">PSU</th>
           <th scope="col">RAM</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          {% if user.is_superuser%}
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          {% endif %}
+          <th scope="col">Średnia ocena:</th>
         </tr>
       </thead>
       <tbody>
@@ -27,24 +29,11 @@
           <td>{{ pc.psu }}</td>
           <td>{{ pc.ram }}</td>
           <td>
-            Średnia ocena: {% if pc.ratings.all %} {{ pc.average_rating }} 
-            {%else%} Brak ocen {% endif %}
+            {% if pc.ratings.all %} {{ pc.average_rating }} {%else%} Brak ocen
+            {% endif %}
           </td>
-          <td>
-            <form method="POST" action="{% url 'rate-pc' pc.id %}">
-              {% csrf_token %}
-              <div class="form-group">
-                <select class="form-control" name="rating" id="rating">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <input type="submit" class="btn btn-primary" value="Oceń" />
-                </select>
-              </div>
-            </form>
-          </td>
+        </tr>
+        <tr>
           <td>
             <form method="GET" action="{% url 'details' pc.id %}">
               {% csrf_token %}
@@ -62,7 +51,7 @@
               Usuń
             </button>
           </td>
-          <td class="d-none d-md-table-cell">
+          <td>
             <button
               class="btn btn-info"
               type="submit"
@@ -72,28 +61,28 @@
             </button>
           </td>
           {% endif %} {% endif %}
-          <td class="d-md-none">
-            <div class="btn-group">
-              <button
-                type="button"
-                class="btn btn-secondary dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Opcje
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                {% if user.is_authenticated%} {% if user.is_superuser%}
-                <a class="dropdown-item" href="{% url 'delete-pc-set' pc.id %}"
-                  >Usuń</a
-                >
-                <a class="dropdown-item" href="{% url 'edit-set' pc.id %}"
-                  >Edytuj</a
-                >
-                {% endif %} {% endif %}
+          <td>
+            <form method="POST" action="{% url 'rate-pc' pc.id %}">
+              {% csrf_token %}
+              <div class="form-inline">
+                <div class="form-group">
+                  <select class="form-control" name="rating" id="rating" style="margin-right: 10px;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input type="submit" class="btn btn-primary" value="Oceń" />
+                </div>
               </div>
-            </div>
+            </form>
+          </td>
+          <td>
+          </td>
+          <td>
           </td>
         </tr>
         {%endfor%}

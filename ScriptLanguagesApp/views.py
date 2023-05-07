@@ -56,7 +56,7 @@ class CreatedSetsView(View):
         self.logger.log('INFO', 'CreatedSetsView GET request')
         pcs = PC.objects.all()
         return render(request,"creator/created-sets.html", {'pcs':pcs})
-
+@method_decorator(login_required, name='dispatch')
 class DetailsView(View):
     def __init__(self):
         super().__init__()
