@@ -1,1 +1,1 @@
-web: gunicorn ScriptLanguagesApp.wsgi --log-file -
+web: gunicorn DjangoApp.wsgi --log-file -
