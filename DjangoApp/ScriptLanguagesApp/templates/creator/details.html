@@ -30,7 +30,9 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">Użytkownik: {{comment.user.username}} Dnia: {{comment.created_at}} <br>
             Napisał(a): <br><br>{{comment.text}}</li>
+            {% if user.is_superuser%}
             <button class="btn btn-danger" type="submit" onclick="location.href='{% url 'delete-comment' comment.id %}'">Usuń</button>
+            {% endif %}
         </ul>
         {% empty %}
         <p>Brak komentarzy.</p>

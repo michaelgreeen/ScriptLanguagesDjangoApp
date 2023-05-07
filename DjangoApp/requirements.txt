@@ -1,0 +1,11 @@
+asgiref==3.6.0
+autopep8==2.0.2
+bootstrap4==0.1.0
+crispy-bootstrap4==2022.1
+Django==4.2
+django-crispy-forms==2.0
+pycodestyle==2.10.0
+sqlparse==0.4.3
+structlog==23.1.0
+tomli==2.0.1
+tzdata==2023.3

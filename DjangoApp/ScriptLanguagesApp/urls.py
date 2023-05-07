@@ -1,21 +1,30 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
 from django.contrib.auth import views as django_views
 from .forms import UserLoginForm
-from . import views
+from .views import (
+    IndexView,
+    RegisterView,
+    CreatedSetsView,
+    AddSetView,
+    DetailsView,
+    CommentAddView,
+    CommentDeleteView,
+    PCSetDeleteView,
+    PCEditView
+)
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("register", views.register_request, name="register"),
-    path("created-sets/",views.created_sets_request,name="created-sets"),
-    path("add-set/",views.add_set_request,name="add-set"),
-    path("details/<int:pc_id>",views.details_request,name="details"),
-    path('login/',django_views.LoginView.as_view(template_name="registration/login.html",authentication_form=UserLoginForm),name='login'),
-    path('add_comment/<int:pc_id>',views.comment_add_request,name='add-comment'),
-    path('delete-comment/<int:comment_id>/',views.comment_delete_request,name='delete-comment'),
-    path('delete-pc-set/<int:pc_id>/',views.pc_set_delete_request,name='delete-pc-set'),
-    path('edit-pc-set-view/<int:pc_id>/',views.pc_set_edit_view,name='edit-pc-set-view')
+    path('', IndexView.as_view(), name='index'),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('created-sets/', CreatedSetsView.as_view(), name='created-sets'),
+    path('add-set/', AddSetView.as_view(), name='add-set'),
+    path('details/<int:pc_id>/', DetailsView.as_view(), name='details'),
+    path('login/', django_views.LoginView.as_view(template_name='registration/login.html', authentication_form=UserLoginForm), name='login'),
+    path('add_comment/<int:pc_id>/', CommentAddView.as_view(), name='add-comment'),
+    path('delete-comment/<int:comment_id>/', CommentDeleteView.as_view(), name='delete-comment'),
+    path('delete-pc-set/<int:pc_id>/', PCSetDeleteView.as_view(), name='delete-pc-set'),
+    path('edit-set/<int:pc_id>/', PCEditView.as_view(), name='edit-set')
 ]
