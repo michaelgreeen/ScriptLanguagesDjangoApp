@@ -1,4 +1,8 @@
-.PHONY: build run requirements down remove prune
+.PHONY: migrations build run requirements down remove prune
+
+migrations:
+	python manage.py makemigrations
+	python manage.py migrate
 
 # Build the Docker services
 build:
@@ -16,6 +20,6 @@ requirements:
 down:
 	docker-compose down --rmi all --remove-orphans
 
-#Remove all images lol
+# Remove all images
 prune:
 	docker images prune -a

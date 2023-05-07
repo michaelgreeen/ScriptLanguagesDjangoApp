@@ -1,14 +1,22 @@
+from asyncio.log import logger
+from numbers import Integral
+from sqlite3 import IntegrityError
 from .Common.logger import Logger
 from .forms import PCForm, NewUserForm, PCEditForm
-from .models import PC, Comment
+from .models import PC, Comment, PCRating
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.db.models import Avg
+from django.db import IntegrityError
 
 def is_superuser(user):
     return user.is_superuser
+
+def already_rated(request):
+        return render(request=request, template_name="creator/already-rated.html")
 
 class IndexView(View):
     def __init__(self):
@@ -35,6 +43,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            self.logger.log('INFO', 'RegisterView: User registered')
             return redirect("index")
         return render(request=request, template_name="registration/register.html", context={"register_form": form})
 
@@ -57,6 +66,27 @@ class DetailsView(View):
         self.logger.log('INFO', 'DetailsView GET request')
         pc = get_object_or_404(PC, id=int(pc_id))
         return render(request, 'creator/details.html', {'pc':pc})
+
+@method_decorator(login_required, name='dispatch')
+class RatePCView(View):
+    def __init__(self):
+        super().__init__()
+        self.logger = Logger()
+        
+    def post(self, request, pc_id):
+        pc = PC.objects.get(id=pc_id)
+        rating = int(request.POST.get('rating'))
+        user = request.user
+        try:
+            self.logger.log('INFO', 'RatePcView POST: Trying to create a rating')
+            PCRating.objects.create(pc=pc, rating=rating,user=user)
+            self.logger.log('INFO', 'RatePcView POST: Rating successfully created')
+        except IntegrityError as e:
+            self.logger.log('ERROR', f'RatePcView POST: UNIQUE constraint, Each user may assess the PC set exactly one time ')
+            return redirect('already-rated')
+        pc.average_rating = PCRating.objects.filter(pc=pc).aggregate(Avg('rating'))['rating__avg']
+        pc.save()
+        return redirect('created-sets')
 
 @method_decorator(login_required, name='dispatch')
 @method_decorator(user_passes_test(is_superuser), name='dispatch')

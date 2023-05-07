@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Zestaw został już przez ciebie oceniony!</h1>
+<p>Zostaniesz przekierowany na poprzednią witrynę za <span id="countdown">5</span> sekund.</p>
+<script>
+    var count = 5;
+    var countdownElement = document.getElementById("countdown");
+    setInterval(function(){
+        count--;
+        countdownElement.textContent = count;
+        if (count <= 0) {
+            window.location.href = "/created-sets/";
+        }
+    }, 1000);
+</script>
+{% endblock %}

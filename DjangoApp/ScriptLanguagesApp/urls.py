@@ -11,7 +11,9 @@ from .views import (
     CommentAddView,
     CommentDeleteView,
     PCSetDeleteView,
-    PCEditView
+    PCEditView,
+    RatePCView,
+    already_rated
 )
 
 urlpatterns = [
@@ -26,5 +28,7 @@ urlpatterns = [
     path('add_comment/<int:pc_id>/', CommentAddView.as_view(), name='add-comment'),
     path('delete-comment/<int:comment_id>/', CommentDeleteView.as_view(), name='delete-comment'),
     path('delete-pc-set/<int:pc_id>/', PCSetDeleteView.as_view(), name='delete-pc-set'),
-    path('edit-set/<int:pc_id>/', PCEditView.as_view(), name='edit-set')
+    path('edit-set/<int:pc_id>/', PCEditView.as_view(), name='edit-set'),
+    path('rate-pc/<int:pc_id>/', RatePCView.as_view(), name='rate-pc'),
+    path('already-rated/', already_rated, name='already-rated')
 ]

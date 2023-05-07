@@ -75,9 +75,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'DjangoApp.urls'
 
-LANGUAGE_CODE = 'pl'
-TIME_ZONE = 'Europe/Warsaw'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -128,15 +125,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'en-us'  # or other appropriate code
 USE_I18N = True
+USE_L10N = True
+TIME_ZONE = 'UTC'
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
-USE_TZ = True
-
+MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
