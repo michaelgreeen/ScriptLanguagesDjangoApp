@@ -1,102 +1,104 @@
 {% extends "base.html" %} {% block content %}
-
-<div class="container">
-  <h1 class="text-center"></h1>
-  <div class="row justify-content-center">
-    <div >
-      <div class="card">
-        <div class="card-body">
-          <table class="table table-responsive table-striped">
-            <thead>
-              <tr>
-                <th>Nazwa zestawu</th>
-                <th>CPU</th>
-                <th>GPU</th>
-                <th>PSU</th>
-                <th>RAM</th>
-                <th>Ocena</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for pc in pcs %}
-              <tr>
-                <td>{{ pc.name }}</td>
-                <td>{{ pc.cpu }}</td>
-                <td>{{ pc.gpu }}</td>
-                <td>{{ pc.psu }}</td>
-                <td>{{ pc.ram }}</td>
-                <td>Średnia ocena: {% if pc.ratings.all %}
-                  {{ pc.average_rating }}
-              {% else %}
-                  Brak ocen
-              {% endif %}</td>
-                <td>
-                  <form method="POST" action="{% url 'rate-pc' pc.id %}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <select class="form-control" name="rating" id="rating">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <input type="submit" class="btn btn-primary" value="Oceń">
-                      </select>
-                    </div>
-                  </form>
-                </td>
-                <td>
-                  <form method="GET" action="{% url 'details' pc.id %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="pc_id" value="{{ pc.id }}" />
-                    <button class="btn btn-secondary" type="submit">
-                      Szczegóły
-                    </button>
-                  </form>
-                </td>
-                {% if user.is_authenticated%}
-                {% if user.is_superuser%}
-                <td>
-                  <button
-                    class="btn btn-danger"
-                    type="submit"
-                    onclick="location.href='{% url 'delete-pc-set' pc.id %}'"
-                  >
-                    Usuń
-                  </button>
-                </td>
-                <td>
-                  <button
-                    class="btn btn-info"
-                    type="submit"
-                    onclick="location.href='{% url 'edit-set' pc.id %}'"
-                  >
-                    Edytuj
-                  </button>
-                </td>
-                {% endif %}
-                {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-12">
+    <table class="table table-sm">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nazwa zestawu</th>
+          <th scope="col">CPU</th>
+          <th scope="col">GPU</th>
+          <th scope="col">PSU</th>
+          <th scope="col">RAM</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          {% if user.is_superuser%}
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for pc in pcs %}
+        <tr scope="row">
+          <td>{{ pc.name }}</td>
+          <td>{{ pc.cpu }}</td>
+          <td>{{ pc.gpu }}</td>
+          <td>{{ pc.psu }}</td>
+          <td>{{ pc.ram }}</td>
+          <td>
+            Średnia ocena: {% if pc.ratings.all %} {{ pc.average_rating }} 
+            {%else%} Brak ocen {% endif %}
+          </td>
+          <td>
+            <form method="POST" action="{% url 'rate-pc' pc.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <select class="form-control" name="rating" id="rating">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <input type="submit" class="btn btn-primary" value="Oceń" />
+                </select>
+              </div>
+            </form>
+          </td>
+          <td>
+            <form method="GET" action="{% url 'details' pc.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="pc_id" value="{{ pc.id }}" />
+              <button class="btn btn-secondary" type="submit">Szczegóły</button>
+            </form>
+          </td>
+          {% if user.is_authenticated%} {% if user.is_superuser%}
+          <td class="d-none d-md-table-cell">
+            <button
+              class="btn btn-danger"
+              type="submit"
+              onclick="location.href='{% url 'delete-pc-set' pc.id %}'"
+            >
+              Usuń
+            </button>
+          </td>
+          <td class="d-none d-md-table-cell">
+            <button
+              class="btn btn-info"
+              type="submit"
+              onclick="location.href='{% url 'edit-set' pc.id %}'"
+            >
+              Edytuj
+            </button>
+          </td>
+          {% endif %} {% endif %}
+          <td class="d-md-none">
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-secondary dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                Opcje
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                {% if user.is_authenticated%} {% if user.is_superuser%}
+                <a class="dropdown-item" href="{% url 'delete-pc-set' pc.id %}"
+                  >Usuń</a
+                >
+                <a class="dropdown-item" href="{% url 'edit-set' pc.id %}"
+                  >Edytuj</a
+                >
+                {% endif %} {% endif %}
+              </div>
+            </div>
+          </td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    {% endblock%}
   </div>
 </div>
-{%endblock%}
-
-{% block javascript %}
-  <script>
-    $(document).ready(function() {
-      $('.star').click(function() {
-        var value = $(this).data('value');
-        $('#rating').val(value);
-        $('.star').removeClass('selected');
-        $(this).addClass('selected');
-      });
-    });
-  </script>
-{% endblock %}
