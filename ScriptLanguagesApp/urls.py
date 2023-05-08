@@ -15,6 +15,21 @@ from .views import (
     RatePCView,
     already_rated
 )
+from .sitemaps import AddSetViewSitemap, CommentAddViewSitemap, CommentDeleteViewSitemap, CreatedSetsSitemap, DetailsViewSitemap, IndexSitemap, PCEditViewSitemap, PCSetDeleteViewSitemap, RatePCViewSitemap, RegisterSitemap
+from django.contrib.sitemaps.views import sitemap
+
+sitemaps = {
+    'index': IndexSitemap,
+    'register': RegisterSitemap,
+    'createdsets': CreatedSetsSitemap,
+    'details': DetailsViewSitemap,
+    'ratepc': RatePCViewSitemap,
+    'addset': AddSetViewSitemap,
+    'commentadd': CommentAddViewSitemap,
+    'commentdelete': CommentDeleteViewSitemap,
+    'pcsetdelete': PCSetDeleteViewSitemap,
+    'pcedit': PCEditViewSitemap,
+}
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
@@ -31,4 +46,5 @@ urlpatterns = [
     path('edit-set/<int:pc_id>/', PCEditView.as_view(), name='edit-set'),
     path('rate-pc/<int:pc_id>/', RatePCView.as_view(), name='rate-pc'),
     path('already-rated/', already_rated, name='already-rated'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

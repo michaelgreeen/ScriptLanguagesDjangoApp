@@ -1,5 +1,3 @@
-from asyncio.log import logger
-from numbers import Integral
 from sqlite3 import IntegrityError
 from .Common.logger import Logger
 from .forms import PCForm, NewUserForm, PCEditForm
@@ -46,7 +44,7 @@ class RegisterView(View):
             self.logger.log('INFO', 'RegisterView: User registered')
             return redirect("index")
         return render(request=request, template_name="registration/register.html", context={"register_form": form})
-
+@method_decorator(login_required, name='dispatch')
 class CreatedSetsView(View):
     def __init__(self):
         super().__init__()

@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ScriptLanguagesApp',
     'crispy_forms',
-    'crispy_bootstrap4'
+    'crispy_bootstrap4',
+    'django.contrib.sitemaps',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -140,6 +141,11 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 ]
+
+GRAPH_MODELS = {
+  'app_labels': ["ScriptLanguagesApp"],
+  'group_models': True,
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
