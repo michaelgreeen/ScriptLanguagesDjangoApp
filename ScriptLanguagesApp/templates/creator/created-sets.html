@@ -41,7 +41,8 @@
               <button class="btn btn-secondary" type="submit">Szczegóły</button>
             </form>
           </td>
-          {% if user.is_authenticated%} {% if user.is_superuser%}
+          {% if user.is_authenticated%} 
+          {% if user.is_superuser%}
           <td class="d-none d-md-table-cell">
             <button
               class="btn btn-danger"
@@ -60,7 +61,11 @@
               Edytuj
             </button>
           </td>
-          {% endif %} {% endif %}
+          {% else %} 
+          <td></td>
+          <td></td>
+          {% endif %}
+          {% endif %}
           <td>
             <form method="POST" action="{% url 'rate-pc' pc.id %}">
               {% csrf_token %}

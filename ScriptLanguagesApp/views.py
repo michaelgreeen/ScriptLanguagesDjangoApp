@@ -123,7 +123,6 @@ class CommentAddView(View):
         return redirect('details', pc_id=pc_id)
 
 @method_decorator(login_required, name='dispatch')
-@method_decorator(user_passes_test(is_superuser), name='dispatch')
 class CommentDeleteView(View):
     def __init__(self):
         super().__init__()
@@ -132,7 +131,9 @@ class CommentDeleteView(View):
     def get(self, request, comment_id):
         self.logger.log('INFO', 'CommentDeleteView GET request')
         comment = get_object_or_404(Comment, id=comment_id)
-        comment.delete()
+        if comment.user == request.user:
+            comment.delete()
+
         return redirect('details', pc_id=comment.pc.id)
 
 @method_decorator(login_required, name='dispatch')
